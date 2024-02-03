@@ -4,7 +4,7 @@ import React from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 
 export interface ParticipantObject {
-  id: number;
+  index: number;
   name: string;
   amount: string;
 }
@@ -44,7 +44,8 @@ export default function useSplitMoneyService() {
     register,
     handleSubmit,
     watch,
-    formState: { errors }
+    formState: { errors },
+    setValue
   } = useForm<Inputs>({
     defaultValues: initialValues
   });
@@ -77,6 +78,7 @@ export default function useSplitMoneyService() {
     toastMessage,
     resetToastMessage,
     setToastMessage,
+    setValue,
     link
   };
 }
