@@ -3,15 +3,30 @@
 import React from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 
+export interface ParticipantObject {
+  id: number;
+  name: string;
+  amount: string;
+}
+
 type Inputs = {
   total: string;
-  participants: Array<{
-    name: string;
-    amount: string;
-  }>;
+  participants: Array<ParticipantObject>;
 };
 
 export default function useSplitMoneyService() {
+  const [toastMessage, setToastMessage] = React.useState<string>();
+  const [link, setLink] = React.useState<string>();
+
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      const searchParams = new URLSearchParams(window.location.search);
+      const searchQuery = searchParams.get("data");
+      if (searchQuery) {
+        setToastMessage("Link Copied");
+      }
+    }
+  }, []);
   const initialValues = React.useMemo(() => {
     if (typeof window !== "undefined") {
       const searchParams = new URLSearchParams(window.location.search);
@@ -41,9 +56,14 @@ export default function useSplitMoneyService() {
 
   const onSubmit: SubmitHandler<Inputs> = React.useCallback(data => {
     const encoded = btoa(JSON.stringify(data));
-    console.log({ data, encoded, return: JSON.parse(atob(encoded)) });
+    setLink(
+      `${window.location.origin}/${window.location.pathname}?data=${encoded}`
+    );
+    setToastMessage("Link Generated");
+  }, []);
 
-    window.location.search = `data=${encoded}`;
+  const resetToastMessage = React.useCallback(() => {
+    setToastMessage(undefined);
   }, []);
 
   return {
@@ -52,6 +72,11 @@ export default function useSplitMoneyService() {
     watch,
     errors,
     onSubmit,
-    fieldArrayHelper
+    control,
+    fieldArrayHelper,
+    toastMessage,
+    resetToastMessage,
+    setToastMessage,
+    link
   };
 }
