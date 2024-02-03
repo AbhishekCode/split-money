@@ -5,15 +5,15 @@ import useSplitMoneyService from "./service";
 import InputFields from "../components/inputFields";
 import React from "react";
 import { getAmountValue } from "./utils";
-import { remove } from "lodash";
+import { MdDelete } from "react-icons/md";
 
 export default function SplitMoney() {
   const service = useSplitMoneyService();
   return (
-    <div className="w-full h-full bg-white rounded-lg dark:bg-gray-800 p-10">
-      <h3 className="text-center font-extrabold text-xl">Split Amount </h3>
+    <div className="w-full h-full bg-white rounded-lg dark:bg-gray-800 p-2">
+      <h3 className="text-center font-extrabold text-3xl">Split Amount </h3>
       <form onSubmit={service.handleSubmit(service.onSubmit)}>
-        <div className="grid gap-6 mb-6 md:grid-cols-2">
+        <div className="grid gap-6 m-6 md:grid-cols-2">
           <InputFields
             name={"total"}
             register={service.register}
@@ -23,6 +23,9 @@ export default function SplitMoney() {
           />
         </div>
 
+        <div className="flex-row text-center font-bold mb-4">
+          <span>Participants</span>
+        </div>
         <ParticipantsTable
           fieldArrayHelper={service.fieldArrayHelper}
           register={service.register}
@@ -103,12 +106,12 @@ function ParticipantsTable(props: {
   );
 
   return (
-    <div className="w-full max-w-md p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
-      <div className="flex items-center justify-between mb-4">
+    <div className="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+      <div className="flex mb-2">
         <h5 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
           Name
         </h5>
-        <h5 className="text-xl font-medium leading-none text-gray-900 dark:text-white">
+        <h5 className="text-xl font-medium leading-none text-gray-900 dark:text-white ml-32">
           Amount
         </h5>
       </div>
@@ -118,8 +121,8 @@ function ParticipantsTable(props: {
           className="divide-y divide-gray-200 dark:divide-gray-700">
           {props.fieldArrayHelper.fields.map((field, index) => (
             <li className="py-3 sm:py-4" key={index}>
-              <div className="flex items-center">
-                <div className="flex-1 min-w-0 mr-1">
+              <div className="flex items-center flex-wrap align-middle ">
+                <div className="mr-1">
                   <InputFields
                     name={`participants.${index}.name`}
                     register={props.register}
@@ -128,7 +131,7 @@ function ParticipantsTable(props: {
                   />
                 </div>
 
-                <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white mr-1 ml-1">
+                <div className="text-base font-semibold text-gray-900 dark:text-white mr-1 ml-1 ">
                   <InputFields
                     name={`participants.${index}.amount`}
                     register={props.register}
@@ -138,12 +141,15 @@ function ParticipantsTable(props: {
                     disabled={!useCustomInput}
                   />
                 </div>
-                <button
-                  type="button"
-                  onClick={() => removeParticipant(index)}
-                  className="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500">
-                  <span className="sr-only">Remove</span>
-                </button>
+                <div className="items-center mb-6">
+                  <button
+                    type="button"
+                    onClick={() => removeParticipant(index)}
+                    className="text-red-700 border border-red-700 hover:bg-red-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:focus:ring-red-800 dark:hover:bg-red-500">
+                    <MdDelete></MdDelete>
+                    <span className="sr-only">Remove</span>
+                  </button>
+                </div>
               </div>
             </li>
           ))}
