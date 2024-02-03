@@ -2,6 +2,7 @@
 import {
   UseFieldArrayReturn,
   UseFormRegister,
+  UseFormSetValue,
   useWatch
 } from "react-hook-form";
 import useSplitMoneyService from "./service";
@@ -17,16 +18,12 @@ import {
   IconButton,
   List,
   ListItem,
-  Paper,
   Snackbar,
   Typography
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CopyIcon from "@mui/icons-material/ContentCopy";
-import Box from "@mui/material/Box";
 import CardHeader from "@mui/material/CardHeader";
-import Link from "next/link";
-import { color } from "@mui/system";
 
 export default function SplitMoney() {
   const service = useSplitMoneyService();
@@ -51,6 +48,7 @@ export default function SplitMoney() {
             fieldArrayHelper={service.fieldArrayHelper}
             register={service.register}
             control={service.control}
+            setValue={service.setValue}
           />
         </CardContent>
 
@@ -95,6 +93,7 @@ function ParticipantsTable(props: {
   fieldArrayHelper: UseFieldArrayReturn<any, "participants", "id">;
   register: UseFormRegister<any>;
   control: any;
+  setValue: UseFormSetValue<any>;
 }) {
   const totalAmount = useWatch({ control: props.control, name: "total" });
 
@@ -103,12 +102,10 @@ function ParticipantsTable(props: {
   const updateAmount = React.useCallback(
     (amountValue: number) => {
       props.fieldArrayHelper.fields.forEach((field, index) => {
-        props.fieldArrayHelper.update(index, {
-          amount: amountValue
-        });
+        props.setValue(`participants.${index}.amount`, amountValue);
       });
     },
-    [props.fieldArrayHelper]
+    [props]
   );
 
   React.useEffect(() => {
@@ -126,7 +123,7 @@ function ParticipantsTable(props: {
       props.fieldArrayHelper.fields.length + 1
     );
     props.fieldArrayHelper.append({
-      id: props.fieldArrayHelper.fields.length + 1,
+      index: props.fieldArrayHelper.fields.length + 1,
       name: "",
       amount: amountValue
     });
@@ -143,14 +140,10 @@ function ParticipantsTable(props: {
       );
 
       props.fieldArrayHelper.fields.forEach((field, index) => {
-        if (index !== removeIndex) {
-          props.fieldArrayHelper.update(index, {
-            amount: amountValue
-          });
-        }
+        props.setValue(`participants.${index}.amount`, amountValue);
       });
     },
-    [props.fieldArrayHelper, totalAmount]
+    [props, totalAmount]
   );
 
   return (
