@@ -1,6 +1,6 @@
 import { HTMLInputTypeAttribute } from "react";
 import { UseFormRegister } from "react-hook-form";
-import classNames from "classNames";
+import classNames from "classnames";
 
 export default function InputFields(props: {
   name: string;
