@@ -1,8 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  basePath: "/split-money",
-  output: "export",
-  reactStrictMode: true
+  output: "export"
 };
 
 export default nextConfig;
