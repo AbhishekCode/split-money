@@ -132,16 +132,16 @@ function ParticipantsTable(props: {
 
   const removeParticipant = React.useCallback(
     (removeIndex: number) => {
-      props.fieldArrayHelper.remove(removeIndex);
-
       const amountValue = getAmountValue(
         totalAmount,
         props.fieldArrayHelper.fields.length - 1
       );
-
       props.fieldArrayHelper.fields.forEach((field, index) => {
-        props.setValue(`participants.${index}.amount`, amountValue);
+        if (index !== removeIndex) {
+          props.setValue(`participants.${index}.amount`, amountValue);
+        }
       });
+      props.fieldArrayHelper.remove(removeIndex);
     },
     [props, totalAmount]
   );
