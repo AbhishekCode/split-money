@@ -18,15 +18,6 @@ export default function useSplitMoneyService() {
   const [toastMessage, setToastMessage] = React.useState<string>();
   const [link, setLink] = React.useState<string>();
 
-  React.useEffect(() => {
-    if (typeof window !== "undefined") {
-      const searchParams = new URLSearchParams(window.location.search);
-      const searchQuery = searchParams.get("data");
-      if (searchQuery) {
-        setToastMessage("Link Copied");
-      }
-    }
-  }, []);
   const initialValues = React.useMemo(() => {
     if (typeof window !== "undefined") {
       const searchParams = new URLSearchParams(window.location.search);
