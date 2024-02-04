@@ -29,7 +29,7 @@ export default function SplitMoney() {
   const service = useSplitMoneyService();
   return (
     <form onSubmit={service.handleSubmit(service.onSubmit)}>
-      <Card variant="elevation" style={{ padding: 2 }}>
+      <Card variant="outlined" style={{ padding: 2 }}>
         <CardHeader title="Split Amount" />
         <CardContent style={{ padding: 4 }}>
           <InputFields

@@ -57,9 +57,7 @@ export default function useSplitMoneyService() {
 
   const onSubmit: SubmitHandler<Inputs> = React.useCallback(data => {
     const encoded = btoa(JSON.stringify(data));
-    setLink(
-      `${window.location.origin}/${window.location.pathname}?data=${encoded}`
-    );
+    setLink(`${window.location.href.replace(/\/$/, "")}/?data=${encoded}`);
     setToastMessage("Link Generated");
   }, []);
 
